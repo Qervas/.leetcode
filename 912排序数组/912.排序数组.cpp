@@ -3,7 +3,7 @@
  * @Date: 2022-04-27 00:56:25
  * @LastEditors: FrankTudor
  * @Description: This file is created, edited, contributed by FrankTudor
- * @LastEditTime: 2022-04-30 01:55:41
+ * @LastEditTime: 2022-04-30 16:21:44
  */
 /*
  * @lc app=leetcode.cn id=912 lang=cpp
@@ -180,75 +180,40 @@ public:
     // }
 
     //####Quick Sort####
-    int partition(int lo, int hi, vector<int>& nums){//[lo,hi)
-        
-        if(lo >= hi - 1){return lo;}
-        ysx::swap(nums[lo], nums[lo+rand()%(hi-lo+1)]);
-        int base = nums[lo];//randomization is better
-        if(hi > nums.size()){hi--;}
-        while(lo < hi){//assert : lo == hi
-            while( lo < hi && nums[hi] >= base){hi--;}
-            nums[lo] = nums[hi];
-            while( lo < hi && nums[lo] < base){lo++;}
-            nums[hi] = nums[lo];
+int partition(vector<int>& nums, int l, int r) {
+        int pivot = nums[r];
+        int i = l - 1;
+        for (int j = l; j <= r - 1; ++j) {
+            if (nums[j] <= pivot) {
+                i = i + 1;
+                swap(nums[i], nums[j]);
+            }
         }
-        nums[lo] = base;
-        return lo;
-
-
-       
+        swap(nums[i + 1], nums[r]);
+        return i + 1;
     }
-    void print(vector<int>& vec){
-        for(int& x: vec){
-            printf("%d, ",x);
+    int randomized_partition(vector<int>& nums, int l, int r) {
+        int i = rand() % (r - l + 1) + l; // 随机选一个作为我们的主元
+        swap(nums[r], nums[i]);
+        return partition(nums, l, r);
+    }
+    void randomized_quicksort(vector<int>& nums, int l, int r) {
+        if (l < r) {
+            int pos = randomized_partition(nums, l, r);
+            randomized_quicksort(nums, l, pos - 1);
+            randomized_quicksort(nums, pos + 1, r);
         }
     }
+public:
     vector<int> sortArray(vector<int>& nums) {
-        // if(nums.empty()){return {};}
-        // if(nums.size() == 1){return nums;}
-        // if(nums.size() == 2){
-        //     if(nums[0] > nums[1]){
-        //         ysx::swap(nums[0], nums[1]);
-        //     }
-        //     return nums;
-        // }
-        if(nums.size() < 7){insertionSort(nums);return nums;}
-        int stack[nums.size()];
-        int top = -1, hi, lo;
-        stack[++top] = 0;
-        stack[++top] = nums.size();
-        int pivot;
-        while(top >= 0){
-            hi = stack[top--];
-            lo = stack[top--];
-            pivot = partition(lo, hi, nums);
-            // print(nums);
-            // printf("pivot: %d|| ",nums[pivot]);
-            // printf("[%d, %d)",lo,hi);
-            // printf("\n");
-            if(pivot > lo){//[lo, pivot)
-                stack[++top] = lo;
-                stack[++top] = pivot;
-                // printf("lo: [%d, %d)\n",lo, pivot);
-            }
-            if(pivot + 1 < hi){//[pivot + 1, hi)
-                stack[++top] = pivot + 1;
-                stack[++top] = hi;
-                // printf("hi: [%d, %d)\n",pivot+1, hi);
-            }
-        }
+        srand((unsigned)time(NULL));
+        randomized_quicksort(nums, 0, (int)nums.size() - 1);
         return nums;
     }
 
 
+
+
+
 };
 // @lc code=end
-
-int main(){
-    Solution s;
-    vector<int> vec{-4,0,7,4,9,-5,-1,0,-7,-1};
-    s.sortArray(vec);
-    s.print(vec);
-
-    return 0;
-}

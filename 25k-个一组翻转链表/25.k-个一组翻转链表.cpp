@@ -3,7 +3,9 @@
  * @Date: 2022-04-26 20:34:48
  * @LastEditors: FrankTudor
  * @Description: This file is created, edited, contributed by FrankTudor
- * @LastEditTime: 2022-04-26 23:00:39
+ *  Your runtime beats 97.87 % of cpp submissions
+ *  Your memory usage beats 68.31 % of cpp submissions (11.1 MB)
+ * @LastEditTime: 2022-04-30 16:20:53
  */
 /*
  * @lc app=leetcode.cn id=25 lang=cpp
@@ -24,8 +26,7 @@
 class Solution {
 public:
 
-    //Your runtime beats 97.87 % of cpp submissions
-    // Your memory usage beats 68.31 % of cpp submissions (11.1 MB)
+    
     ListNode* reverse(ListNode * start, ListNode* end, ListNode*& beforeEnd ){//[start, end)
         ListNode* tailToArrow = start;
         ListNode* arrowToTail = start->next;
